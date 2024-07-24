@@ -9,5 +9,6 @@ namespace HospitalManagementSystemAPI
 
         public DbSet<Role> Roles { get; set; }
         public DbSet<Staff> Staffs { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

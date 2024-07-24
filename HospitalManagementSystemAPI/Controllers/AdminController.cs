@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using HospitalManagementSystemAPI.Controllers.Responses;
 using HospitalManagementSystemAPI.Exceptions.Generic;
 using HospitalManagementSystemAPI.Exceptions.Role;
+using HospitalManagementSystemAPI.DTOs.Staff;
+using HospitalManagementSystemAPI.Exceptions.Staff;
 
 namespace HospitalManagementSystemAPI.Controllers
 {
@@ -37,6 +39,24 @@ namespace HospitalManagementSystemAPI.Controllers
             catch (RoleDuplicationException ex)
             {
                 return Conflict(new ErrorResponse(ex.Message, StatusCodes.Status409Conflict));
+            }
+        }
+
+        [HttpPost("/staff")]
+        public async Task<IActionResult> AddStaff(NewStaffDTO newStaffDTO)
+        {
+            try
+            {
+                Staff staff = await _adminService.AddStaff(newStaffDTO);
+                return Ok(new SuccessResponse("Staff Added", staff));
+            }
+            catch (InvalidStaffInputException ex)
+            {
+                return BadRequest(new ErrorResponse(ex.Message, StatusCodes.Status400BadRequest));
+            }
+            catch (EntityCreationException ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ex.Message, StatusCodes.Status500InternalServerError));
             }
         }
     }

@@ -1,8 +1,10 @@
+using HospitalManagementSystemAPI.Controllers.Responses;
 using HospitalManagementSystemAPI.Models;
 using HospitalManagementSystemAPI.Repositories;
 using HospitalManagementSystemAPI.Repositories.Interfaces;
 using HospitalManagementSystemAPI.Services;
 using HospitalManagementSystemAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalManagementSystemAPI
@@ -16,6 +18,13 @@ namespace HospitalManagementSystemAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services
+                .Configure<ApiBehaviorOptions>(
+                    options =>
+                    {
+                        options.InvalidModelStateResponseFactory = ErrorResponse.CreateCustomErrorResponseForInvalidModel;
+                    }
+                );
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -30,10 +39,14 @@ namespace HospitalManagementSystemAPI
 
             #region repositories
             builder.Services.AddScoped<IRepository<Role>, RoleRepository>();
+            builder.Services.AddScoped<IRepository<Staff>, StaffRepository>();
+            builder.Services.AddScoped<IRepository<User>, UserRepository>();
             #endregion
 
             #region services
             builder.Services.AddScoped<IAdminService, AdminService>();
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
             #endregion
 
             var app = builder.Build();
