@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace HospitalManagementSystemAPI
 {
     public class Program
@@ -12,6 +14,14 @@ namespace HospitalManagementSystemAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            #region context
+                    builder.Services.AddDbContext<HospitalManagementSystemContext>(
+                            options => options.UseSqlServer(
+                                    builder.Configuration.GetConnectionString("SQLServer")
+                                )
+                        );
+            #endregion
 
             var app = builder.Build();
 
