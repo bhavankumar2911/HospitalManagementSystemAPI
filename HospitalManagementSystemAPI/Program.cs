@@ -1,3 +1,8 @@
+using HospitalManagementSystemAPI.Models;
+using HospitalManagementSystemAPI.Repositories;
+using HospitalManagementSystemAPI.Repositories.Interfaces;
+using HospitalManagementSystemAPI.Services;
+using HospitalManagementSystemAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalManagementSystemAPI
@@ -23,6 +28,14 @@ namespace HospitalManagementSystemAPI
                         );
             #endregion
 
+            #region repositories
+            builder.Services.AddScoped<IRepository<Role>, RoleRepository>();
+            #endregion
+
+            #region services
+            builder.Services.AddScoped<IAdminService, AdminService>();
+            #endregion
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -33,7 +46,6 @@ namespace HospitalManagementSystemAPI
             }
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

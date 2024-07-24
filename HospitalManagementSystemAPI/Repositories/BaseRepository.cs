@@ -27,7 +27,7 @@ namespace HospitalManagementSystemAPI.Repositories
 
                 return entity;
             }
-            catch
+            catch (Exception) 
             {
                 throw new EntityCreationException(_entityName);
             }

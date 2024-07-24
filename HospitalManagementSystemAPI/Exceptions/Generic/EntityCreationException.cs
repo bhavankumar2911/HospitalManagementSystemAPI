@@ -2,6 +2,6 @@
 {
     public class EntityCreationException : Exception
     {
-        public EntityCreationException(string entityName) : base($"Cannot create {entityName}") { }
+        public EntityCreationException(string entityName) : base($"Cannot add {entityName}") { }
     }
 }
