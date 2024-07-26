@@ -5,6 +5,7 @@ using HospitalManagementSystemAPI.Repositories.Interfaces;
 using HospitalManagementSystemAPI.Services;
 using HospitalManagementSystemAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalManagementSystemAPI
@@ -41,12 +42,30 @@ namespace HospitalManagementSystemAPI
             builder.Services.AddScoped<IRepository<Role>, RoleRepository>();
             builder.Services.AddScoped<IRepository<Staff>, StaffRepository>();
             builder.Services.AddScoped<IRepository<User>, UserRepository>();
+            builder.Services.AddScoped<IRepository<Patient>, PatientRepository>();
+            builder.Services.AddScoped<IRepository<MedicalHistory>, MedicalHistoryRepository>();
             #endregion
 
             #region services
             builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
+            builder.Services.AddScoped<IPatientService, PatientService>();
+            #endregion
+
+            #region CORS
+            builder.Services.AddCors(opts =>
+            {
+                opts.AddPolicy("CORSPolicy", options =>
+                {
+                    options
+                        .WithOrigins("http://localhost:3000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
             #endregion
 
             var app = builder.Build();
@@ -58,6 +77,7 @@ namespace HospitalManagementSystemAPI
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("CORSPolicy");
             app.UseAuthorization();
 
             app.MapControllers();

@@ -58,6 +58,14 @@ namespace HospitalManagementSystemAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ex.Message, StatusCodes.Status500InternalServerError));
             }
+            catch(StaffEmailDuplicationException ex)
+            {
+                return Conflict(new ErrorResponse(ex.Message, StatusCodes.Status409Conflict));
+            }
+            catch (StaffPhoneDuplicationException ex)
+            {
+                return Conflict(new ErrorResponse(ex.Message, StatusCodes.Status409Conflict));
+            }
         }
     }
 }

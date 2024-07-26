@@ -63,7 +63,8 @@ namespace HospitalManagementSystemAPI.Services
                 DateOfJoining = newStaffDTO.DateOfJoining,
                 Email = newStaffDTO.Email,
                 Address = newStaffDTO.Address,
-                DateOfBirth = newStaffDTO.DateOfBirth
+                DateOfBirth = newStaffDTO.DateOfBirth,
+                Phone = newStaffDTO.Phone
             };
         }
 
@@ -79,8 +80,32 @@ namespace HospitalManagementSystemAPI.Services
             };
         }
 
+        private async Task CheckEmailPhoneDuplication (NewStaffDTO newStaffDTO)
+        {
+            // email check
+            try
+            {
+                var users = await _userRepository.GetAll();
+
+                if (users.Any(user => user.Email == newStaffDTO.Email)) throw new StaffEmailDuplicationException();
+            }
+            catch (NoEntitiesAvailableException) { }
+
+            // phone check
+            try
+            {
+                var staffs = await _staffRepository.GetAll();
+
+                if (staffs.Any(staff => staff.Phone == newStaffDTO.Phone)) throw new StaffPhoneDuplicationException();
+            }
+            catch (NoEntitiesAvailableException) { }
+        }
+
         public async Task<Staff> AddStaff(NewStaffDTO newStaffDTO)
         {
+            // check email and phone number duplication
+            await CheckEmailPhoneDuplication(newStaffDTO);
+
             try
             {
                 // get role

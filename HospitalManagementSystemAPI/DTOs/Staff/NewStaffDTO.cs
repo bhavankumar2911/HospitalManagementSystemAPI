@@ -8,6 +8,10 @@ namespace HospitalManagementSystemAPI.DTOs.Staff
         [EmailAddress(ErrorMessage = "Email address is not valid.")]
         public string Email { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Phone number is required.")]
+        [RegularExpression(@"^[+]{1}(?:[0-9\-\\(\\)\\/.]\s?){6,15}[0-9]{1}$", ErrorMessage = "Phone number is not valid.")]
+        public string Phone { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "Role is required.")]
         [Range(1, 50, ErrorMessage = "Give a valid role.")]
         public int RoleId { get; set; }

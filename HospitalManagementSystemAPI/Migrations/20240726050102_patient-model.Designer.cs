@@ -4,6 +4,7 @@ using HospitalManagementSystemAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalManagementSystemAPI.Migrations
 {
     [DbContext(typeof(HospitalManagementSystemContext))]
-    partial class HospitalManagementSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20240726050102_patient-model")]
+    partial class patientmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,32 +23,6 @@ namespace HospitalManagementSystemAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("HospitalManagementSystemAPI.Models.MedicalHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Allergies")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PreConditions")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("MedicalHistories");
-                });
 
             modelBuilder.Entity("HospitalManagementSystemAPI.Models.Patient", b =>
                 {
@@ -172,17 +148,6 @@ namespace HospitalManagementSystemAPI.Migrations
                     b.HasIndex("StaffId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("HospitalManagementSystemAPI.Models.MedicalHistory", b =>
-                {
-                    b.HasOne("HospitalManagementSystemAPI.Models.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("HospitalManagementSystemAPI.Models.User", b =>
