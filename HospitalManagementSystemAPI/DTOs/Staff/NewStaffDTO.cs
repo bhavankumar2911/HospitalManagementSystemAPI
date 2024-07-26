@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HospitalManagementSystemAPI.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace HospitalManagementSystemAPI.DTOs.Staff
 {
@@ -13,8 +14,8 @@ namespace HospitalManagementSystemAPI.DTOs.Staff
         public string Phone { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Role is required.")]
-        [Range(1, 50, ErrorMessage = "Give a valid role.")]
-        public int RoleId { get; set; }
+        [Range(0, 4, ErrorMessage = "Give a valid role.")]
+        public Role Role { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]
         public string PlainTextPassword { get; set; } = string.Empty;

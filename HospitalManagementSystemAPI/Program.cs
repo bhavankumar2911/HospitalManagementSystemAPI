@@ -39,7 +39,6 @@ namespace HospitalManagementSystemAPI
             #endregion
 
             #region repositories
-            builder.Services.AddScoped<IRepository<Role>, RoleRepository>();
             builder.Services.AddScoped<IRepository<Staff>, StaffRepository>();
             builder.Services.AddScoped<IRepository<User>, UserRepository>();
             builder.Services.AddScoped<IRepository<Patient>, PatientRepository>();
@@ -50,7 +49,6 @@ namespace HospitalManagementSystemAPI
             builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
-            builder.Services.AddScoped<IRoleService, RoleService>();
             builder.Services.AddScoped<IPatientService, PatientService>();
             #endregion
 
