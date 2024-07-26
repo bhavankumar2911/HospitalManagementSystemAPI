@@ -1,13 +1,11 @@
 ﻿using HospitalManagementSystemAPI.DTOs.MedicalHistory;
 using HospitalManagementSystemAPI.DTOs.Patient;
-using HospitalManagementSystemAPI.DTOs.Staff;
 using HospitalManagementSystemAPI.Exceptions.Generic;
 using HospitalManagementSystemAPI.Exceptions.Patient;
-using HospitalManagementSystemAPI.Exceptions.Staff;
 using HospitalManagementSystemAPI.Models;
-using HospitalManagementSystemAPI.Repositories;
 using HospitalManagementSystemAPI.Repositories.Interfaces;
 using HospitalManagementSystemAPI.Services.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace HospitalManagementSystemAPI.Services
 {
@@ -81,9 +79,29 @@ namespace HospitalManagementSystemAPI.Services
             return patient;
         }
 
-        public Task<Patient> SearchPatientByName(string searchString)
+        public async Task<IEnumerable<Patient>> SearchPatientByName(string searchString)
         {
-            throw new NotImplementedException();
+            if (searchString == null || searchString == string.Empty)
+                throw new EmptySearchStringException("patient name");
+
+            Regex regex = new Regex("^[a-zA-Z ]*$");
+            if (!regex.IsMatch(searchString))
+                throw new InvalidSearchStringExeption("The patient name can have only alphabets and spaces.");
+
+            try
+            {
+                var patients = await _patientRepository.GetAll();
+
+                return patients
+                    .Where(patient =>
+                    {
+                        string name = patient.Firstname + " " + patient.Lastname;
+                        return name.ToLower().Contains(searchString.ToLower());
+                    });
+            } catch (NoEntitiesAvailableException)
+            {
+                return new List<Patient>();
+            }
         }
     }
 }

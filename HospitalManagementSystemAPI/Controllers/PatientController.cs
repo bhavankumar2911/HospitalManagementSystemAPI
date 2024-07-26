@@ -44,5 +44,23 @@ namespace HospitalManagementSystemAPI.Controllers
                 return Conflict(new ErrorResponse(ex.Message, StatusCodes.Status409Conflict));
             }
         }
+
+        [HttpGet("/patient/search")]
+        public async Task<IActionResult> SearchPatientByName([FromQuery] string? searchString)
+        {
+            try
+            {
+                var patients = await _patientService.SearchPatientByName(searchString ?? "");
+
+                return Ok(new SuccessResponse(!patients.Any() ? "No patients available" : "", patients));
+            } catch (EmptySearchStringException ex)
+            {
+                return BadRequest(new ErrorResponse(ex.Message, StatusCodes.Status400BadRequest));
+            }
+            catch (InvalidSearchStringExeption ex)
+            {
+                return BadRequest(new ErrorResponse(ex.Message, StatusCodes.Status400BadRequest));
+            }
+        }
     }
 }
