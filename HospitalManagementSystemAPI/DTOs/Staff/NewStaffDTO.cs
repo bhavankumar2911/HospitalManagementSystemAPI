@@ -1,4 +1,5 @@
-﻿using HospitalManagementSystemAPI.Enums;
+﻿using HospitalManagementSystemAPI.DTOs.Doctor;
+using HospitalManagementSystemAPI.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace HospitalManagementSystemAPI.DTOs.Staff

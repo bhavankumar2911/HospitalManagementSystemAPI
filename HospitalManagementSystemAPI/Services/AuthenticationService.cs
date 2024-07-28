@@ -1,4 +1,6 @@
-﻿using HospitalManagementSystemAPI.Models;
+﻿using HospitalManagementSystemAPI.DTOs.Staff;
+using HospitalManagementSystemAPI.Models;
+using HospitalManagementSystemAPI.Objects.Authentication;
 using HospitalManagementSystemAPI.Services.Interfaces;
 using System.Security.Cryptography;
 using System.Text;
@@ -21,14 +23,23 @@ namespace HospitalManagementSystemAPI.Services
             return true;
         }
 
-        public byte[] GetHashedPassword(HMACSHA512 hMACSHA, string plainTextPassword)
+        private byte[] GetHashedPassword(HMACSHA512 hMACSHA, string plainTextPassword)
         {
             return hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(plainTextPassword));
         }
 
-        public byte[] GetHashKey(HMACSHA512 hMACSHA)
+        private byte[] GetHashKey(HMACSHA512 hMACSHA)
         {
             return hMACSHA.Key;
+        }
+
+        public PasswordInformation GetPasswordInformation(string plainTextPassword)
+        {
+            HMACSHA512 hMACSHA512 = new HMACSHA512();
+            byte[] passwordHashKey = GetHashKey(hMACSHA512);
+            byte[] hashedPassword = GetHashedPassword(hMACSHA512, plainTextPassword);
+
+            return new PasswordInformation { PasswordHashKey = passwordHashKey, HashedPassword = hashedPassword };
         }
     }
 }

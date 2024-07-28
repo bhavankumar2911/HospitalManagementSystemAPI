@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using HospitalManagementSystemAPI.Controllers.Responses;
 using HospitalManagementSystemAPI.Exceptions.Generic;
-using HospitalManagementSystemAPI.Exceptions.Role;
 using HospitalManagementSystemAPI.DTOs.Staff;
 using HospitalManagementSystemAPI.Exceptions.Staff;
+using HospitalManagementSystemAPI.DTOs.Doctor;
 
 namespace HospitalManagementSystemAPI.Controllers
 {
@@ -29,21 +29,42 @@ namespace HospitalManagementSystemAPI.Controllers
                 Staff staff = await _adminService.AddStaff(newStaffDTO);
                 return Ok(new SuccessResponse("Staff Added", staff));
             }
-            catch (InvalidStaffInputException ex)
+            catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse(ex.Message, StatusCodes.Status400BadRequest));
+                await Console.Out.WriteLineAsync(ex.ToString());
+                return ex switch
+                {
+                    InvalidStaffInputException => BadRequest(new ErrorResponse(ex.Message, StatusCodes.Status400BadRequest)),
+
+                    StaffEmailDuplicationException or StaffPhoneDuplicationException => Conflict(new ErrorResponse(ex.Message, StatusCodes.Status409Conflict)),
+
+                    EntityCreationException => StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ex.Message, StatusCodes.Status500InternalServerError)),
+
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse("Unknown error occurred.", StatusCodes.Status500InternalServerError)),
+                };
             }
-            catch (EntityCreationException ex)
+        }
+
+        [HttpPost("/doctor")]
+        public async Task<IActionResult> AddStaff(NewDoctorDTO newDoctorDTO)
+        {
+            try
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ex.Message, StatusCodes.Status500InternalServerError));
+                Staff staff = await _adminService.AddStaff(newDoctorDTO);
+                return Ok(new SuccessResponse("Doctor Added", staff));
             }
-            catch(StaffEmailDuplicationException ex)
+            catch (Exception ex)
             {
-                return Conflict(new ErrorResponse(ex.Message, StatusCodes.Status409Conflict));
-            }
-            catch (StaffPhoneDuplicationException ex)
-            {
-                return Conflict(new ErrorResponse(ex.Message, StatusCodes.Status409Conflict));
+                return ex switch
+                {
+                    InvalidStaffInputException => BadRequest(new ErrorResponse(ex.Message, StatusCodes.Status400BadRequest)),
+
+                    StaffEmailDuplicationException or StaffPhoneDuplicationException => Conflict(new ErrorResponse(ex.Message, StatusCodes.Status409Conflict)),
+
+                    EntityCreationException => StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ex.Message, StatusCodes.Status500InternalServerError)),
+
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse("Unknown error occurred.", StatusCodes.Status500InternalServerError)),
+                };
             }
         }
     }

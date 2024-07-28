@@ -29,6 +29,7 @@ namespace HospitalManagementSystemAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddAutoMapper(typeof(Program));
 
             #region context
                     builder.Services.AddDbContext<HospitalManagementSystemContext>(
@@ -43,6 +44,8 @@ namespace HospitalManagementSystemAPI
             builder.Services.AddScoped<IRepository<User>, UserRepository>();
             builder.Services.AddScoped<IRepository<Patient>, PatientRepository>();
             builder.Services.AddScoped<IRepository<MedicalHistory>, MedicalHistoryRepository>();
+            builder.Services.AddScoped<IRepository<Nurse>, NurseRepository>();
+            builder.Services.AddScoped<IRepository<Doctor>, DoctorRepository>();
             #endregion
 
             #region services
@@ -50,6 +53,8 @@ namespace HospitalManagementSystemAPI
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IPatientService, PatientService>();
+            builder.Services.AddScoped<INurseService, NurseService>();
+            builder.Services.AddScoped<IDoctorService, DoctorService>();
             #endregion
 
             #region CORS
