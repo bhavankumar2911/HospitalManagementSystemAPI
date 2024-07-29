@@ -2,6 +2,7 @@
 {
     public class DoctorResponseDTO
     {
+        public int Id { get; set; }
         public string Qualification { get; set; } = string.Empty;
         public string Specialization { get; set; } = string.Empty;
         public string Firstname { get; set; } = string.Empty;

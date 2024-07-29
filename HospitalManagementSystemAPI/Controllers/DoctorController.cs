@@ -29,5 +29,19 @@ namespace HospitalManagementSystemAPI.Controllers
                 return NotFound(new ErrorResponse(ex.Message, StatusCodes.Status404NotFound));
             }
         }
+
+        [HttpGet("/doctors/least-appointments")]
+        public async Task<IActionResult> GetDoctorsWithLeastAppointments()
+        {
+            try
+            {
+                var doctors = await _doctorService.GetDoctorsWithLeastAppointments();
+                return Ok(new SuccessResponse(doctors));
+            }
+            catch (NoEntitiesAvailableException ex)
+            {
+                return NotFound(new ErrorResponse(ex.Message, StatusCodes.Status404NotFound));
+            }
+        }
     }
 }

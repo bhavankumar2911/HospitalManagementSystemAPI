@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HospitalManagementSystemAPI.DTOs.Appointment;
+using HospitalManagementSystemAPI.DTOs.Doctor;
 using HospitalManagementSystemAPI.Enums;
 using HospitalManagementSystemAPI.Exceptions.Doctor;
 using HospitalManagementSystemAPI.Exceptions.Generic;
@@ -96,6 +97,31 @@ namespace HospitalManagementSystemAPI.Services
             appointment = await _appointmentRepository.Create(appointment);
 
             return appointment;
+        }
+
+        public async Task<IEnumerable<DoctorResponseDTO>> GetAvailableDoctors(DateTime appointmentFixingDateTime)
+        {
+            var doctors = await _doctorRepository.GetAll();
+            var appointments = (await _appointmentRepository.GetAll())
+                .Where(a => a.FixedDateTime >= appointmentFixingDateTime);
+
+            foreach (var doctor in doctors)
+            {
+                var doctorAppointments = appointments.Where(a => a.Doctor.Id ==  doctor.Id);  
+
+                foreach (var appointment in doctorAppointments)
+                {
+                    DateTime appointmentEndTime = appointment.FixedDateTime.AddMinutes(30);
+
+                    if (appointmentFixingDateTime > appointment.FixedDateTime
+                        && appointmentFixingDateTime < appointmentEndTime)
+                    {
+
+                    }
+                }
+            }
+
+            throw new NotImplementedException();
         }
     }
 }
