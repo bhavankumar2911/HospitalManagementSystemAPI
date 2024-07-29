@@ -5,7 +5,6 @@ using HospitalManagementSystemAPI.Repositories.Interfaces;
 using HospitalManagementSystemAPI.Services;
 using HospitalManagementSystemAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalManagementSystemAPI
@@ -46,6 +45,7 @@ namespace HospitalManagementSystemAPI
             builder.Services.AddScoped<IRepository<MedicalHistory>, MedicalHistoryRepository>();
             builder.Services.AddScoped<IRepository<Nurse>, NurseRepository>();
             builder.Services.AddScoped<IRepository<Doctor>, DoctorRepository>();
+            builder.Services.AddScoped<IRepository<Appointment>, AppointmentRepository>();
             #endregion
 
             #region services
@@ -55,6 +55,7 @@ namespace HospitalManagementSystemAPI
             builder.Services.AddScoped<IPatientService, PatientService>();
             builder.Services.AddScoped<INurseService, NurseService>();
             builder.Services.AddScoped<IDoctorService, DoctorService>();
+            builder.Services.AddScoped<IAppointmentService, AppointmentService>();
             #endregion
 
             #region CORS

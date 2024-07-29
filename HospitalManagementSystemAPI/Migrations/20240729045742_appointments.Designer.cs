@@ -4,6 +4,7 @@ using HospitalManagementSystemAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalManagementSystemAPI.Migrations
 {
     [DbContext(typeof(HospitalManagementSystemContext))]
-    partial class HospitalManagementSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20240729045742_appointments")]
+    partial class appointments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +31,6 @@ namespace HospitalManagementSystemAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("AppointmentStatus")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("BookedDateTime")
                         .HasColumnType("datetime2");

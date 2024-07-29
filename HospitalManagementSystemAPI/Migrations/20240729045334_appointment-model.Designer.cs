@@ -4,6 +4,7 @@ using HospitalManagementSystemAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalManagementSystemAPI.Migrations
 {
     [DbContext(typeof(HospitalManagementSystemContext))]
-    partial class HospitalManagementSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20240729045334_appointment-model")]
+    partial class appointmentmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,42 +23,6 @@ namespace HospitalManagementSystemAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("HospitalManagementSystemAPI.Models.Appointment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("AppointmentStatus")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("BookedDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Concern")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("FixedDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("Appointments");
-                });
 
             modelBuilder.Entity("HospitalManagementSystemAPI.Models.Doctor", b =>
                 {
@@ -238,25 +204,6 @@ namespace HospitalManagementSystemAPI.Migrations
                     b.HasIndex("StaffId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("HospitalManagementSystemAPI.Models.Appointment", b =>
-                {
-                    b.HasOne("HospitalManagementSystemAPI.Models.Doctor", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HospitalManagementSystemAPI.Models.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("HospitalManagementSystemAPI.Models.Doctor", b =>

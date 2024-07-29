@@ -13,5 +13,6 @@ namespace HospitalManagementSystemAPI
         public DbSet<MedicalHistory> MedicalHistories { get; set; }
         public DbSet<Nurse> Nurses { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
     }
 }
