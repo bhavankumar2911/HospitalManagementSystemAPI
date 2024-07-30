@@ -4,8 +4,6 @@ namespace HospitalManagementSystemAPI.DTOs.Appointment
 {
     public class NewAppointmentDTO
     {
-        public DateTime FixedDateTime { get; set; }
-
         [Range(1, int.MaxValue, ErrorMessage = "Give a valid doctor.")]
         public int DoctorId { get; set; }
 

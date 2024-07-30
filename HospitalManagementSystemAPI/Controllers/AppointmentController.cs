@@ -5,7 +5,6 @@ using HospitalManagementSystemAPI.Exceptions.Generic;
 using HospitalManagementSystemAPI.Exceptions.Patient;
 using HospitalManagementSystemAPI.Models;
 using HospitalManagementSystemAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalManagementSystemAPI.Controllers
@@ -22,6 +21,10 @@ namespace HospitalManagementSystemAPI.Controllers
         }
 
         [HttpPost("/appointment")]
+        [ProducesResponseType(typeof(SuccessResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> BookAppointment (NewAppointmentDTO newAppointmentDTO)
         {
             try
@@ -36,7 +39,7 @@ namespace HospitalManagementSystemAPI.Controllers
                 {
                     EntityCreationException => StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ex.Message, StatusCodes.Status500InternalServerError)),
 
-                    EntityNotFoundException => NotFound(new ErrorResponse(ex.Message, StatusCodes.Status404NotFound)),
+                    EntityNotFoundException or DoctorAppointmentOverflowException => NotFound(new ErrorResponse(ex.Message, StatusCodes.Status404NotFound)),
 
                     DoctorNotAvailableException or PatientAppointmentConflictException => Conflict(new ErrorResponse(ex.Message, StatusCodes.Status409Conflict)),
 
