@@ -45,6 +45,20 @@ namespace HospitalManagementSystemAPI.Controllers
             }
         }
 
+        [HttpGet("/patient")]
+        public async Task<IActionResult> GetAllPatients()
+        {
+            try
+            {
+                var patients = await _patientService.GetAllPatients();
+
+                return Ok(new SuccessResponse(patients));
+            } catch (NoEntitiesAvailableException ex)
+            {
+                return NotFound(new ErrorResponse(ex.Message, StatusCodes.Status404NotFound));
+            }
+        }
+
         [HttpGet("/patient/search")]
         public async Task<IActionResult> SearchPatientByName([FromQuery] string? searchString)
         {

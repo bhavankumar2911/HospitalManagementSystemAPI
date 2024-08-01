@@ -7,5 +7,7 @@ namespace HospitalManagementSystemAPI.Services.Interfaces
     {
         public Task<IEnumerable<Patient>> SearchPatientByName(string searchString);
         public Task<Patient> AddNewPatient(NewPatientDTO newPatientDTO);
+
+        public Task<IEnumerable<Patient>> GetAllPatients();
     }
 }

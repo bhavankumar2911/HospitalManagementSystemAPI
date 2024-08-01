@@ -151,5 +151,19 @@ namespace HospitalManagementSystemAPI.Services
 
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<Appointment>> GetUpcomingAppointments()
+        {
+            try
+            {
+                var appointments = (await _appointmentRepository.GetAll())
+                .Where(a => a.AppointmentStatus == AppointmentStatus.Fixed);
+
+                return appointments;
+            } catch (NoEntitiesAvailableException)
+            {
+                return new List<Appointment>();
+            }
+        }
     }
 }

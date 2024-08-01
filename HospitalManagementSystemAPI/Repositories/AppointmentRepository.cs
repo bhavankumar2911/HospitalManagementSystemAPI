@@ -15,7 +15,7 @@ namespace HospitalManagementSystemAPI.Repositories
 
         public override async Task<IEnumerable<Appointment>> GetAll()
         {
-            var appointments = await _context.Set<Appointment>().Include(d => d.Doctor).ToListAsync();
+            var appointments = await _context.Set<Appointment>().Include(d => d.Doctor.Staff).Include(a => a.Patient).ToListAsync();
 
             if (appointments.Count > 0) return appointments;
 

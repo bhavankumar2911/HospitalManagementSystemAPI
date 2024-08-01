@@ -103,5 +103,12 @@ namespace HospitalManagementSystemAPI.Services
                 return new List<Patient>();
             }
         }
+
+        public async Task<IEnumerable<Patient>> GetAllPatients()
+        {
+            var patients = await _patientRepository.GetAll();
+
+            return patients;    
+        }
     }
 }

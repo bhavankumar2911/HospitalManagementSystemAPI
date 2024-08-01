@@ -47,5 +47,13 @@ namespace HospitalManagementSystemAPI.Controllers
                 }; ;
             }
         }
+
+        [HttpGet("/appointment/upcoming")]
+        public async Task<IActionResult> GetUpcomingAppointments()
+        {
+            var appointments = await _appointmentService.GetUpcomingAppointments();
+
+            return Ok(new SuccessResponse(appointments));
+        }
     }
 }

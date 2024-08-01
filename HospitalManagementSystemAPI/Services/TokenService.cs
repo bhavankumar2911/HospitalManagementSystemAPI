@@ -1,4 +1,5 @@
-﻿using HospitalManagementSystemAPI.Services.Interfaces;
+﻿using HospitalManagementSystemAPI.Enums;
+using HospitalManagementSystemAPI.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,11 +17,11 @@ namespace HospitalManagementSystemAPI.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         }
 
-        public string GenerateToken(int userId, string role)
+        public string GenerateToken(int userId, Role role)
         {
             var claims = new List<Claim>(){
                 new Claim("id", userId.ToString()),
-                new Claim(ClaimTypes.Role, role)
+                new Claim(ClaimTypes.Role, role.ToString())
             };
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);

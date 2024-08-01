@@ -30,6 +30,12 @@ namespace HospitalManagementSystemAPI.DTOs.Patient
         [RegularExpression(@"^[+]{1}(?:[0-9\-\\(\\)\\/.]\s?){6,15}[0-9]{1}$", ErrorMessage = "Phone number is not valid.")]
         public string Phone { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Address is required.")]
+        public string Address { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Date of birth is required.")]
+        public DateTime DateOfBirth { get; set; } = DateTime.Now;
+
         public PatientMedicalHistoryDTO MedicalHistory { get; set; } = new PatientMedicalHistoryDTO();
     }
 }

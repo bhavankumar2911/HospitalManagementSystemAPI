@@ -4,6 +4,7 @@
     {
         Fixed,
         Admitted,
+        PaymentPending,
         Closed
     }
 }
