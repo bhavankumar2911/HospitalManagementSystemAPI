@@ -23,5 +23,16 @@ namespace HospitalManagementSystemAPI.Repositories
 
             throw new NoEntitiesAvailableException("User");
         }
+
+        public override async Task<User> Get(int id)
+        {
+            var user = await _context.Set<User>()
+                .Include(d => d.Staff)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user != null) return user;
+
+            throw new EntityNotFoundException("User", id);
+        }
     }
 }

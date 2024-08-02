@@ -11,5 +11,7 @@ namespace HospitalManagementSystemAPI.Services.Interfaces
         public Task<IEnumerable<DoctorResponseDTO>> GetAvailableDoctors(DateTime appointmentFixingDateTime);
 
         public Task<IEnumerable<Appointment>> GetUpcomingAppointments();
+
+        public Task<IEnumerable<Appointment>> GetAppointmentsOfADoctor(int userId);
     }
 }

@@ -16,13 +16,15 @@ namespace HospitalManagementSystemAPI.Services
         private readonly IRepository<Appointment> _appointmentRepository;
         private readonly IRepository<Doctor> _doctorRepository;
         private readonly IRepository<Patient> _patientRepository;
+        private readonly IRepository<User> _userRepository;
         private readonly IMapper _mapper;
 
-        public AppointmentService(IRepository<Appointment> appointmentRepository, IRepository<Doctor> doctorRepository, IRepository<Patient> patientRepository, IMapper mapper)
+        public AppointmentService(IRepository<Appointment> appointmentRepository, IRepository<Doctor> doctorRepository, IRepository<Patient> patientRepository, IMapper mapper, IRepository<User> userRepository)
         {
             _appointmentRepository = appointmentRepository;
             _doctorRepository = doctorRepository;
             _patientRepository = patientRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -164,6 +166,22 @@ namespace HospitalManagementSystemAPI.Services
             {
                 return new List<Appointment>();
             }
+        }
+
+        public async Task<IEnumerable<Appointment>> GetAppointmentsOfADoctor(int userId)
+        {
+            Console.WriteLine(userId);
+            var staffId = (await _userRepository.Get(userId)).Staff.Id;
+            Console.WriteLine(staffId);
+            var doctor = (await _doctorRepository.GetAll())
+                .FirstOrDefault(d => d!.Staff.Id == staffId, null);
+
+            if (doctor == null) throw new EntityNotFoundException("User", userId);
+
+            var appointments = (await _appointmentRepository.GetAll())
+                .Where(a => a.Doctor.Id == doctor.Id);
+
+            return appointments;
         }
     }
 }

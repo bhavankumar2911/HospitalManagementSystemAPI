@@ -5,6 +5,7 @@ using HospitalManagementSystemAPI.Exceptions.Generic;
 using HospitalManagementSystemAPI.Exceptions.Patient;
 using HospitalManagementSystemAPI.Models;
 using HospitalManagementSystemAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalManagementSystemAPI.Controllers
@@ -44,7 +45,7 @@ namespace HospitalManagementSystemAPI.Controllers
                     DoctorNotAvailableException or PatientAppointmentConflictException => Conflict(new ErrorResponse(ex.Message, StatusCodes.Status409Conflict)),
 
                     _ => StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse("Unknown error occurred.", StatusCodes.Status500InternalServerError)),
-                }; ;
+                };
             }
         }
 
@@ -54,6 +55,29 @@ namespace HospitalManagementSystemAPI.Controllers
             var appointments = await _appointmentService.GetUpcomingAppointments();
 
             return Ok(new SuccessResponse(appointments));
+        }
+
+        [HttpGet("/doctor/appointments")]
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> GetAppointmentsOfADoctor()
+        {
+            var id = HttpContext.User.Claims.First(c => c.Type == "id");
+
+            try
+            {
+                var appointments = await _appointmentService.GetAppointmentsOfADoctor(int.Parse(id.Value));
+
+                return Ok(new SuccessResponse(appointments));
+            }
+            catch (Exception ex)
+            {
+                return ex switch
+                {
+                    NoEntitiesAvailableException or EntityNotFoundException => NotFound(new ErrorResponse(ex.Message, StatusCodes.Status404NotFound)),
+
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse("Unknown error occurred.", StatusCodes.Status500InternalServerError))
+                };
+            }
         }
     }
 }
