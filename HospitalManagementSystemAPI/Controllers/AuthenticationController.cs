@@ -3,8 +3,10 @@ using HospitalManagementSystemAPI.DTOs.Authentication;
 using HospitalManagementSystemAPI.DTOs.Staff;
 using HospitalManagementSystemAPI.Exceptions.Authentication;
 using HospitalManagementSystemAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HospitalManagementSystemAPI.Controllers
 {
@@ -31,6 +33,22 @@ namespace HospitalManagementSystemAPI.Controllers
             {
                 return BadRequest(new ErrorResponse(ex.Message, StatusCodes.Status400BadRequest));
             }
+        }
+
+        [HttpGet("/authenticate")]
+        [Authorize]
+        public IActionResult Authorize()
+        {
+            var role = HttpContext.User.FindFirst(ClaimTypes.Role);
+            var id = HttpContext.User.Claims.First(c => c.Type == "id");
+
+            AuthorizeResponseDTO authorizeResponseDTO = new AuthorizeResponseDTO
+            {
+                Id = id.Value,
+                Role = role!.Value
+            };
+
+            return Ok(new SuccessResponse(authorizeResponseDTO));
         }
     }
 }

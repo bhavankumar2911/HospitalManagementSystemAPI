@@ -23,7 +23,7 @@ namespace HospitalManagementSystemAPI.Services
                 new Claim("id", userId.ToString()),
                 new Claim(ClaimTypes.Role, role.ToString())
             };
-
+            Console.WriteLine(role.ToString());
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(null, null, claims, expires: DateTime.Now.AddDays(2), signingCredentials: credentials);

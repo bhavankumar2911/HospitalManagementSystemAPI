@@ -15,7 +15,7 @@ namespace HospitalManagementSystemAPI.DTOs.Staff
         public string Phone { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Role is required.")]
-        [Range(0, 4, ErrorMessage = "Give a valid role.")]
+        [Range(0, 3, ErrorMessage = "Give a valid role.")]
         public Role Role { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]
@@ -25,7 +25,6 @@ namespace HospitalManagementSystemAPI.DTOs.Staff
         [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "Firstname must have only alphabets and spaces.")]
         public string Firstname { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Lastname is required.")]
         [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "Lastname must have only alphabets and spaces.")]
         public string Lastname { get; set; } = string.Empty;
 
