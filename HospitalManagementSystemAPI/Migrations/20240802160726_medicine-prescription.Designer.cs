@@ -4,6 +4,7 @@ using HospitalManagementSystemAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalManagementSystemAPI.Migrations
 {
     [DbContext(typeof(HospitalManagementSystemContext))]
-    partial class HospitalManagementSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20240802160726_medicine-prescription")]
+    partial class medicineprescription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,9 +128,6 @@ namespace HospitalManagementSystemAPI.Migrations
                         .HasColumnType("float");
 
                     b.Property<int>("QuantityInMG")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Units")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

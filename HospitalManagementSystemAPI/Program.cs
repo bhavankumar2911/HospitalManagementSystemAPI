@@ -88,6 +88,9 @@ namespace HospitalManagementSystemAPI
             builder.Services.AddScoped<IRepository<Nurse>, NurseRepository>();
             builder.Services.AddScoped<IRepository<Doctor>, DoctorRepository>();
             builder.Services.AddScoped<IRepository<Appointment>, AppointmentRepository>();
+            builder.Services.AddScoped<IRepository<Medicine>, MedicineRepository>();
+            builder.Services.AddScoped<IRepository<Prescription>, PrescriptionRepository>();
+            builder.Services.AddScoped<IRepository<PrescriptionItem>, PrescriptionItemRepository>();
             #endregion
 
             #region services
@@ -98,6 +101,7 @@ namespace HospitalManagementSystemAPI
             builder.Services.AddScoped<INurseService, NurseService>();
             builder.Services.AddScoped<IDoctorService, DoctorService>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+            builder.Services.AddScoped<IMedicineService, MedicineService>();
             #endregion
 
             #region CORS

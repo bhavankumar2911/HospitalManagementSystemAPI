@@ -18,7 +18,6 @@ namespace HospitalManagementSystemAPI.DTOs.Patient
         [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "Firstname must have only alphabets and spaces.")]
         public string Firstname { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Lastname is required.")]
         [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "Lastname must have only alphabets and spaces.")]
         public string Lastname { get; set; } = string.Empty;
 

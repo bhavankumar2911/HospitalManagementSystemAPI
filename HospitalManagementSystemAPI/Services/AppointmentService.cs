@@ -179,7 +179,9 @@ namespace HospitalManagementSystemAPI.Services
             if (doctor == null) throw new EntityNotFoundException("User", userId);
 
             var appointments = (await _appointmentRepository.GetAll())
-                .Where(a => a.Doctor.Id == doctor.Id);
+                .Where(a => a.Doctor.Id == doctor.Id
+                    && a.AppointmentStatus == AppointmentStatus.Fixed
+                );
 
             return appointments;
         }
