@@ -1,9 +1,10 @@
 ﻿using HospitalManagementSystemAPI.Controllers.Responses;
 using HospitalManagementSystemAPI.DTOs.Prescription;
+using HospitalManagementSystemAPI.Exceptions.Authentication;
 using HospitalManagementSystemAPI.Exceptions.Generic;
+using HospitalManagementSystemAPI.Models;
 using HospitalManagementSystemAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalManagementSystemAPI.Controllers
@@ -40,6 +41,23 @@ namespace HospitalManagementSystemAPI.Controllers
 
                     _ => StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse("Unknown error occurred.", StatusCodes.Status500InternalServerError))
                 };
+            }
+        }
+
+        [HttpPost("/patient/prescription")]
+        public async Task<IActionResult> GetPatientPrescriptions(PatientPrescriptionsInputDTO patientPrescriptionsInputDTO)
+        {
+            try
+            {
+                var prescriptions = await _prescriptionService.GetPatientPrescriptions(patientPrescriptionsInputDTO);
+
+                return Ok(new SuccessResponse(prescriptions));
+            } catch (NoEntitiesAvailableException ex)
+            {
+                return NotFound(new ErrorResponse(ex.Message, StatusCodes.Status404NotFound));
+            } catch (InvalidLoginCredentialsException ex)
+            {
+                return BadRequest(new ErrorResponse(ex.Message, StatusCodes.Status400BadRequest));
             }
         }
     }

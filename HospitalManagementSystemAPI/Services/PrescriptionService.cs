@@ -1,5 +1,6 @@
 ﻿using HospitalManagementSystemAPI.DTOs.Prescription;
 using HospitalManagementSystemAPI.DTOs.PrescriptionItem;
+using HospitalManagementSystemAPI.Exceptions.Authentication;
 using HospitalManagementSystemAPI.Exceptions.Generic;
 using HospitalManagementSystemAPI.Models;
 using HospitalManagementSystemAPI.Repositories;
@@ -118,6 +119,41 @@ namespace HospitalManagementSystemAPI.Services
             }
 
             return prescription;
+        }
+
+        public async Task<IDictionary<int, IList<PrescriptionItem>>> GetPatientPrescriptions(PatientPrescriptionsInputDTO patientPrescriptionsInputDTO)
+        {
+            // verify patient
+            var patient = (await _patientRepository.GetAll())
+                .Where(p => p.Email == patientPrescriptionsInputDTO.Email);
+
+            if (!patient.Any())
+                throw new InvalidLoginCredentialsException();
+
+            DateOnly dateInDB = DateOnly.FromDateTime(patient.First().DateOfBirth);
+            DateOnly dateFromUser = DateOnly.FromDateTime(patientPrescriptionsInputDTO.DateOfBirth);
+
+            if (dateFromUser != dateInDB)
+                throw new InvalidLoginCredentialsException();
+
+            int patientId = patient.First().Id;
+
+            var prescriptionItems = (await _prescriptionItemRepository.GetAll())
+                .Where(pi => pi.Prescription.Patient.Id == patientId);
+
+            IDictionary<int, IList<PrescriptionItem>> prescriptions = new Dictionary<int, IList<PrescriptionItem>>();
+
+            foreach (var prescriptionItem in prescriptionItems)
+            {
+                int prescriptionId = prescriptionItem.Prescription.Id;
+
+                if (prescriptions.ContainsKey(prescriptionId))
+                    prescriptions[prescriptionId].Add(prescriptionItem);
+                else
+                    prescriptions.Add(prescriptionId, new List<PrescriptionItem>() { prescriptionItem });
+            }
+
+            return prescriptions;
         }
     }
 }
