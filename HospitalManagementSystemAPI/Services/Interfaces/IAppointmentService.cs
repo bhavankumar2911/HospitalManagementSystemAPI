@@ -13,5 +13,7 @@ namespace HospitalManagementSystemAPI.Services.Interfaces
         public Task<IEnumerable<Appointment>> GetUpcomingAppointments();
 
         public Task<IEnumerable<Appointment>> GetAppointmentsOfADoctor(int userId);
+
+        public Task CloseAppointmentByDoctor(int userId, int appointmentId);
     }
 }

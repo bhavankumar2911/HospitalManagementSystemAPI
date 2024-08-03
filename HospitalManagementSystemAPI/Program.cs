@@ -102,6 +102,7 @@ namespace HospitalManagementSystemAPI
             builder.Services.AddScoped<IDoctorService, DoctorService>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
             builder.Services.AddScoped<IMedicineService, MedicineService>();
+            builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
             #endregion
 
             #region CORS

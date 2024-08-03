@@ -2,6 +2,7 @@
 using HospitalManagementSystemAPI.DTOs.Appointment;
 using HospitalManagementSystemAPI.DTOs.Doctor;
 using HospitalManagementSystemAPI.Enums;
+using HospitalManagementSystemAPI.Exceptions.Authentication;
 using HospitalManagementSystemAPI.Exceptions.Doctor;
 using HospitalManagementSystemAPI.Exceptions.Generic;
 using HospitalManagementSystemAPI.Exceptions.Patient;
@@ -168,11 +169,20 @@ namespace HospitalManagementSystemAPI.Services
             }
         }
 
+        private async Task<Doctor> GetDoctorFromUserId (int userId)
+        {
+            var staffId = (await _userRepository.Get(userId)).Staff.Id;
+            var doctor = (await _doctorRepository.GetAll())
+                .FirstOrDefault(d => d!.Staff.Id == staffId, null);
+
+            if (doctor == null) throw new EntityNotFoundException("User", userId);
+
+            return doctor;
+        }
+
         public async Task<IEnumerable<Appointment>> GetAppointmentsOfADoctor(int userId)
         {
-            Console.WriteLine(userId);
             var staffId = (await _userRepository.Get(userId)).Staff.Id;
-            Console.WriteLine(staffId);
             var doctor = (await _doctorRepository.GetAll())
                 .FirstOrDefault(d => d!.Staff.Id == staffId, null);
 
@@ -184,6 +194,19 @@ namespace HospitalManagementSystemAPI.Services
                 );
 
             return appointments;
+        }
+
+        public async Task CloseAppointmentByDoctor(int userId, int appointmentId)
+        {
+            Doctor doctor = await GetDoctorFromUserId(userId);
+            var appointment = await _appointmentRepository.Get(appointmentId);
+
+            // verify doctor
+            if (doctor.Id != appointment.Doctor.Id) throw new UnauthorizedException();
+
+            appointment.AppointmentStatus = AppointmentStatus.PaymentPending;
+
+            await _appointmentRepository.Update(appointment, appointmentId);
         }
     }
 }

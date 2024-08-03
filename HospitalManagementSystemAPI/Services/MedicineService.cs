@@ -53,7 +53,9 @@ namespace HospitalManagementSystemAPI.Services
 
         public async Task<IEnumerable<Medicine>> GetAllMedicines()
         {
-            var medicines = await _medicineRepository.GetAll();
+            var medicines = (await _medicineRepository.GetAll())
+                .Where(m => m.Units > 0);
+
             return medicines;
         }
     }

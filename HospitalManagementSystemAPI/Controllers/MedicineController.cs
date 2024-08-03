@@ -1,12 +1,9 @@
 ﻿using HospitalManagementSystemAPI.Controllers.Responses;
-using HospitalManagementSystemAPI.DTOs.Doctor;
 using HospitalManagementSystemAPI.DTOs.Medicine;
 using HospitalManagementSystemAPI.Exceptions.Generic;
 using HospitalManagementSystemAPI.Exceptions.Medicine;
-using HospitalManagementSystemAPI.Models;
 using HospitalManagementSystemAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalManagementSystemAPI.Controllers

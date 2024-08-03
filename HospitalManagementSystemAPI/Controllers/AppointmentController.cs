@@ -1,5 +1,6 @@
 ﻿using HospitalManagementSystemAPI.Controllers.Responses;
 using HospitalManagementSystemAPI.DTOs.Appointment;
+using HospitalManagementSystemAPI.Exceptions.Authentication;
 using HospitalManagementSystemAPI.Exceptions.Doctor;
 using HospitalManagementSystemAPI.Exceptions.Generic;
 using HospitalManagementSystemAPI.Exceptions.Patient;
@@ -77,6 +78,33 @@ namespace HospitalManagementSystemAPI.Controllers
 
                     _ => StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse("Unknown error occurred.", StatusCodes.Status500InternalServerError))
                 };
+            }
+        }
+
+        [HttpPatch("/doctor/appointment/close")]
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> CloseAppointmentByDoctor([FromQuery] int appointmentId)
+        {
+            var id = HttpContext.User.Claims.First(c => c.Type == "id").Value;
+
+            try
+            {
+                await _appointmentService.CloseAppointmentByDoctor(int.Parse(id), appointmentId);
+
+                return Ok(new SuccessResponse("Appointment closed."));  
+            }
+            catch (Exception ex)
+            {
+                return ex switch
+                {
+                    NoEntitiesAvailableException or EntityNotFoundException => NotFound(new ErrorResponse(ex.Message, StatusCodes.Status404NotFound)),
+
+                    UnauthorizedException => Unauthorized(new ErrorResponse(ex.Message, StatusCodes.Status401Unauthorized)),
+
+                    EntityUpdationException => StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(ex.Message, StatusCodes.Status500InternalServerError)),
+
+                    _ => StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse("Unknown error occurred.", StatusCodes.Status500InternalServerError))
+                }; ;
             }
         }
     }
