@@ -111,7 +111,7 @@ namespace HospitalManagementSystemAPI
                 opts.AddPolicy("CORSPolicy", options =>
                 {
                     options
-                        .WithOrigins("http://localhost:3000")
+                        .WithOrigins("http://localhost:3000", "https://healthease-bhavan.netlify.app")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
