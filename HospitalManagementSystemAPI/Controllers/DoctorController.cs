@@ -43,5 +43,13 @@ namespace HospitalManagementSystemAPI.Controllers
                 return NotFound(new ErrorResponse(ex.Message, StatusCodes.Status404NotFound));
             }
         }
+
+        [HttpGet("/doctor/appointment-slots/{doctorId}")]
+        public async Task<IActionResult> GetDoctorAppointmentSlots(int doctorId)
+        {
+            var slots = await _doctorService.GetDoctorAppointmentSlots(doctorId);
+
+            return Ok(new SuccessResponse(slots));
+        }
     }
 }

@@ -45,6 +45,7 @@ namespace HospitalManagementSystemAPI.Services
                 Phone = newPatientDTO.Phone,
                 Blood = newPatientDTO.Blood,
                 Gender = newPatientDTO.Gender,
+                DateOfBirth = newPatientDTO.DateOfBirth,
             };
         }
 

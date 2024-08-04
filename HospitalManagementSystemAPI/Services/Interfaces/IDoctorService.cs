@@ -7,7 +7,7 @@ namespace HospitalManagementSystemAPI.Services.Interfaces
     {
         public Task AddNewDoctor(Doctor doctor);
         public Task<IEnumerable<DoctorResponseDTO>> ViewAllDoctors();
-
+        public Task<DoctorAppointmentSlotsDTO> GetDoctorAppointmentSlots(int doctorId);
         public Task<IEnumerable<DoctorResponseDTO>> GetDoctorsWithLeastAppointments();
     }
 }

@@ -112,18 +112,16 @@ namespace HospitalManagementSystemAPI.Services
             try
             {
                 appointments = await _appointmentRepository.GetAll();
+
                 // patient conflicts
                 CheckPatientConflicts(appointments, newAppointmentDTO.PatientId);
 
-                // check conflicts
-                //CheckAppointmentConflicts(appointments, newAppointmentDTO.FixedDateTime, newAppointmentDTO.DoctorId);
             } catch (NoEntitiesAvailableException) { }
 
 
             Appointment appointment = _mapper.Map<Appointment>(newAppointmentDTO);
             appointment.Patient = patient;
             appointment.Doctor = doctor;
-            appointment.FixedDateTime = GetAppointmentFixingTime(appointments, newAppointmentDTO.DoctorId);
 
             appointment = await _appointmentRepository.Create(appointment);
 
