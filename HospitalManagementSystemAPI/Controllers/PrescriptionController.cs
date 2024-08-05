@@ -60,5 +60,23 @@ namespace HospitalManagementSystemAPI.Controllers
                 return BadRequest(new ErrorResponse(ex.Message, StatusCodes.Status400BadRequest));
             }
         }
+
+        [HttpGet("/doctor/patient/prescription/{patientId}")]
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> GetDoctorPatientPrescriptions (int patientId)
+        {
+            try
+            {
+                var id = HttpContext.User.Claims.First(c => c.Type == "id").Value;
+
+                var prescriptions = await _prescriptionService.GetDoctorPatientPrescriptions(int.Parse(id), patientId);
+
+                return Ok(new SuccessResponse(prescriptions));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new ErrorResponse(ex.Message, StatusCodes.Status404NotFound));
+            }
+        }
     }
 }

@@ -14,7 +14,13 @@ namespace HospitalManagementSystemAPI.Repositories
 
         public override async Task<IEnumerable<PrescriptionItem>> GetAll()
         {
-            var entities = await _context.Set<PrescriptionItem>().Include(pi => pi.Medicine).Include(pi => pi.Prescription).ThenInclude(p => p.Patient).ToListAsync();
+            var entities = await _context.Set<PrescriptionItem>()
+                .Include(pi => pi.Medicine)
+                .Include(pi => pi.Prescription)
+                .ThenInclude(p => p.Patient)
+                .Include(pi => pi.Prescription)
+                .ThenInclude(p => p.Doctor)
+                .ToListAsync();
 
             if (entities.Count > 0) return entities;
 

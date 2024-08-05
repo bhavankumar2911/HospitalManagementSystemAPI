@@ -8,5 +8,7 @@ namespace HospitalManagementSystemAPI.Services.Interfaces
         public Task<Prescription> SaveNewPrescription(NewPrescriptionDTO newPrescriptionDTO, int userId);
 
         public Task<IDictionary<int, IList<PrescriptionItem>>> GetPatientPrescriptions(PatientPrescriptionsInputDTO patientPrescriptionsInputDTO);
+
+        public Task<IDictionary<int, IList<PrescriptionItem>>> GetDoctorPatientPrescriptions(int userId, int patientId);
     }
 }

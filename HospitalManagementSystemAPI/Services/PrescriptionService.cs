@@ -155,5 +155,35 @@ namespace HospitalManagementSystemAPI.Services
 
             return prescriptions;
         }
+
+        public async Task<IDictionary<int, IList<PrescriptionItem>>> GetDoctorPatientPrescriptions(int userId, int patientId)
+        {
+            IDictionary<int, IList<PrescriptionItem>> prescriptions = new Dictionary<int, IList<PrescriptionItem>>();
+            Doctor doctor = await GetDoctorFromUserId(userId);
+
+            try
+            {
+                var prescriptionItems = (await _prescriptionItemRepository.GetAll())
+                .Where(pi => pi.Prescription.Patient.Id == patientId
+                && pi.Prescription.Doctor.Id == doctor.Id
+                );
+
+                foreach (var prescriptionItem in prescriptionItems)
+                {
+                    int prescriptionId = prescriptionItem.Prescription.Id;
+
+                    if (prescriptions.ContainsKey(prescriptionId))
+                        prescriptions[prescriptionId].Add(prescriptionItem);
+                    else
+                        prescriptions.Add(prescriptionId, new List<PrescriptionItem>() { prescriptionItem });
+                }
+
+                return prescriptions;
+            }
+            catch (NoEntitiesAvailableException)
+            {
+                return prescriptions;
+            }
+        }
     }
 }
