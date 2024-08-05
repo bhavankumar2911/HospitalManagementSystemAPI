@@ -23,6 +23,18 @@ namespace HospitalManagementTest
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            Staff staff = new Staff
+            {
+                Id = 1,
+                Firstname = "staff",
+                Lastname = "one",
+                DateOfJoining = DateTime.Today,
+                Email = "staff@gmail.com",
+                Address = "India",
+                Phone = "+91 8989898989",
+                DateOfBirth = DateTime.Today,
+            };
+
             modelBuilder.Entity<Medicine>()
                 .HasData(
                     new Medicine
@@ -34,6 +46,42 @@ namespace HospitalManagementTest
                         Units = 250
                     }
                 );
+
+            modelBuilder.Entity<Staff>().HasData(staff);
+
+            modelBuilder.Entity<User>()
+                .HasData(new User
+                {
+                    Id = 1,
+                    Email = staff.Email,
+                    Role = HospitalManagementSystemAPI.Enums.Role.Doctor,
+                    Staff = staff,
+                    PasswordHashKey = new byte[] { },
+                    HashedPassword = new byte[] { },
+                });
+
+            modelBuilder.Entity<Doctor>()
+                .HasData(new Doctor
+                {
+                    Id = 1,
+                    Qualification = "mbbs",
+                    Specialization = "dentist",
+                    Staff = staff,
+                });
+
+            modelBuilder.Entity<Patient>()
+                .HasData(new Patient
+                {
+                    Id = 1,
+                    Gender = HospitalManagementSystemAPI.Enums.Gender.Male,
+                    Blood = HospitalManagementSystemAPI.Enums.Blood.OPositive,
+                    Firstname = "Patient",
+                    Email = "patient@gmail.com",
+                    Phone = "+1 2345678901",
+                    Address = "India",
+                    DateOfBirth = DateTime.Today,
+                });
+
             base.OnModelCreating(modelBuilder); 
         }
     }
