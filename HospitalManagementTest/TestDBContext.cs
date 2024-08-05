@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HospitalManagementSystemAPI.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +19,22 @@ namespace HospitalManagementTest
             DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder().UseInMemoryDatabase("dbTest");
 
             return optionsBuilder.Options;
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Medicine>()
+                .HasData(
+                    new Medicine
+                    {
+                        Id = 1,
+                        Name = "Paracetamol",
+                        QuantityInMG = 100,
+                        Price = 150,
+                        Units = 250
+                    }
+                );
+            base.OnModelCreating(modelBuilder); 
         }
     }
 }

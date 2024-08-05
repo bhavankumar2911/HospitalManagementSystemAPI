@@ -83,7 +83,7 @@ namespace HospitalManagementTest.ServiceTest
         {
             NewStaffDTO newStaffDTO = new NewStaffDTO
             {
-                Email = "john@gmail.com",
+                Email = "reception@gmail.com",
                 Phone = "+1 123456789",
                 Role = Role.Receptionist,
                 Firstname = "John",
@@ -97,8 +97,8 @@ namespace HospitalManagementTest.ServiceTest
 
             Assert.Multiple(() =>
             {
-                Assert.That(_context.Staffs.Count, Is.EqualTo(1));
-                Assert.That(_context.Users.Count, Is.EqualTo(1));
+                Assert.That(_context.Staffs.Count, Is.EqualTo(2));
+                Assert.That(_context.Users.Count, Is.EqualTo(2));
             });
         }
 
@@ -107,7 +107,7 @@ namespace HospitalManagementTest.ServiceTest
         {
             NewDoctorDTO newDoctor = new NewDoctorDTO
             {
-                Email = "john1@gmail.com",
+                Email = "doctor@gmail.com",
                 Phone = "+1 123456787",
                 Role = Role.Doctor,
                 Firstname = "John",

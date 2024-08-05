@@ -92,8 +92,8 @@ namespace HospitalManagementTest.ServiceTest
             // login check setup
             NewStaffDTO newStaffDTO = new NewStaffDTO
             {
-                Email = "john@gmail.com",
-                Phone = "+1 123456789",
+                Email = "test@gmail.com",
+                Phone = "+1 123456782",
                 Role = Role.Receptionist,
                 Firstname = "John",
                 PlainTextPassword = "password",
@@ -132,7 +132,7 @@ namespace HospitalManagementTest.ServiceTest
         {
             LoginResponseDTO loginResponseDTO = await _authenticationService.LoginStaff(new StaffLoginInputDTO
             {
-                Email = "john@gmail.com",
+                Email = "test@gmail.com",
                 PlainTextPassword = "password"
             });
 
