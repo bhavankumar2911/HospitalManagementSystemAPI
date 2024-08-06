@@ -62,7 +62,7 @@ namespace HospitalManagementSystemAPI.Controllers
         }
 
         [HttpGet("/doctor/patient/prescription/{patientId}")]
-        [Authorize(Roles = "Doctor")]
+        //[Authorize(Roles = "Doctor")]
         public async Task<IActionResult> GetDoctorPatientPrescriptions (int patientId)
         {
             try
