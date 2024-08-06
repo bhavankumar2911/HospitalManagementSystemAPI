@@ -35,7 +35,7 @@ namespace HospitalManagementSystemAPI.Controllers
         }
 
         [HttpGet("/medicine")]
-        //[Authorize(Roles = "Admin,Doctor")]
+        [Authorize(Roles = "Admin,Doctor")]
         public async Task<IActionResult> GetAllMedicines()
         {
             try
